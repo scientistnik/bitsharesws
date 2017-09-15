@@ -1,8 +1,6 @@
 # Bitsharesws
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/bitsharesws`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem is websocket client for Decentralize Exchange BitShares. Now gem can get public information from Database API.
 
 ## Installation
 
@@ -22,17 +20,52 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+`BitShares` is main class. Require it:
+
+```ruby
+require 'bitshares'
+```
+
+Becouse BitShares is decentralize exchange, before you use it, you need set node (for example openledger):
+
+```ruby
+BitShares.config do
+	node 'wss://bitshares.openledger.info/ws'
+end
+```
+
+This command try connect to this node. If you don't want connect now, use this:
+
+```ruby
+BitShares.config false do
+	node 'wss://bitshares.openledger.info/ws'
+end
+
+# some else code
+
+BitShares.start # now try to connect
+```
+
+If you want to set username and password:
+
+```ruby
+BitShares.config do
+	node 'wss://bitshares.openledger.info/ws'
+	login 'mylogin'
+	pass 'mypass'
+end
+```
+
+If you want to get account use `BitShares.account 'some-account-name'`.
+If you want to know balance some account use `BitShares.balance 'some-account-name'`.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Now gem have only Database API. In future version, I want add all public and wallet API.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/bitsharesws.
+Bug reports and pull requests are welcome on GitHub at https://github.com/scientistnik/bitsharesws.
 
 ## License
 
