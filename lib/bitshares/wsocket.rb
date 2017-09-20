@@ -23,6 +23,7 @@ module BitShares
 			end
 
 			def thread() @thread end
+			def msgs() @msgs ||= {} end
 
 			def stop
 				EventMachine.stop
@@ -31,12 +32,18 @@ module BitShares
 			def send hash
 				id = hash[:id]
 				count = 0
-				while @msgs[id] != nil do
+				while msgs[id] != nil do
 					sleep 0.1
 					count += 1
 					raise "TimeoutError..." if count > 100
 				end
-				@thread[:ws].send hash.to_json if @status == :connected
+
+				if @status == :connected
+					@thread[:ws].send hash.to_json
+				else
+					return nil
+				end
+
 				count = 0
 				while @msgs[id].nil? and @status == :connected do
 					sleep 0.1
@@ -48,13 +55,14 @@ module BitShares
 				lock.synchronize do
 					@msgs[id] = nil
 				end
-				result
+				raise("Bad request...#{result}") if result.nil? || result.key?('error')
+				result['result']
 			end
 
 			def lock() @lock ||= Mutex.new end
 
 			def get_notice
-				if @msgs.key?('notice') && !@msgs['notice'].nil?
+				if msgs.key?('notice') && !@msgs['notice'].nil?
 					msg = @msgs['notice']
 					lock.synchronize do
 						@msgs['notice'] = nil

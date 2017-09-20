@@ -14,15 +14,26 @@ module BitShares
 		end
 
 		class << self
-			def [] id
+			def [] *ids
+				id = ids.first
 				if /^\d\.\d*\.\d*/.match(id)
-					BitShares.assets id unless hash.key? id
-					hash[id] 
-				else
-					hash.each_pair do |k,v|
-						return v if v.name == id
+					unless hash.key? id
+						arr = RPC.new('get_assets',[[id]]).send.inject([]) {|m,a| m << Asset.new(a) }
 					end
+					(ids.size == 1) ? (hash[ida]) : (arr) 
+				else
+					arr = []
+					hash.each_pair do |k,v|
+						if ids.include? v.name
+							(ids.size == 1) ? (return v) : (arr << v)
+						end
+					end
+					arr
 				end
+			end
+
+			def search name, limit=1
+				Rpc.new('list_assets',[name,limit]).send.inject([]) {|m,a| m << Asset.new(a) }
 			end
 
 			def add h

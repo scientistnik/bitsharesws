@@ -5,7 +5,7 @@ require "bitshares/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "bitsharesws"
-  spec.version       = Bitshares::VERSION
+  spec.version       = BitShares::VERSION
   spec.authors       = ["scientistnik"]
   spec.email         = ["nozdrin.plotnitsky@gmail.com"]
 
