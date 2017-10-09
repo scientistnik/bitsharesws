@@ -111,6 +111,59 @@ module BitShares
 					verify_range
 					verify_range_proof_rewind
 				))
+
+				@apis << API.new('wallet',
+				%w(
+					help
+					gethelp
+					info
+					about
+					network_add_nodes
+					network_get_connected_peers
+					is_new
+					is_locked
+					lock
+					unlock
+					set_password
+					dump_private_keys
+					import_key
+					import_accounts
+					import_account_keys
+					import_balance
+					suggest_brain_key
+					get_transaction_id
+					get_private_key
+					load_wallet_file
+					normalize_brain_key
+					save_wallet_file
+					list_my_accounts
+					list_accounts
+					list_account_balances
+					register_account
+					upgrade_account
+					create_account_with_brain_key
+					transfer
+					transfer2
+					whitelist_account
+					withdraw_vesting
+					get_account
+					get_account_id
+					get_account_history
+					approve_proposal
+					sell_asset
+					borrow_asset
+					cancel_order
+					settle_asset
+					get_market_hostory
+					get_limit_orders
+					get_call_orders
+					get_settle_orders
+					list_assets
+					create_asset
+					update_asset
+					update_bitasset
+				))
+
 				@apis
 			end
 
