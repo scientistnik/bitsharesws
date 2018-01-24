@@ -8,11 +8,26 @@ RSpec.describe BitShares do
 	it "test" do
 		BitShares.config do
 			node "wss://node.testnet.bitshares.eu"
-			login "bitsharesws1"
-			pass "bitsharesws1"
 		end
+		dyn = BitShares::RPC.new("get_dynamic_global_properties",[]).send
+		p dyn
 
-		p BitShares::RPC.new(1, "wallet",[]).send
+		operation = [0,{amount: {amount: 10000, asset_id: "1.3.0"},
+								 extensions: [],
+								 fee: {amount: 21815, asset_id: "1.3.0"},
+								 from: "1.2.124",
+								 to: "1.2.1241"
+								 }]
+		hash = {}
+		hash["expiration"] = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%S")
+		hash["extensions"] = []
+		hash["ref_block_num"] = dyn["head_block_number"] & 0xFFFF
+		hash["ref_block_prefix"] = [dyn["head_block_id"]].pack("H*")[4..-1].unpack("L<").first
+		hash["signatures"] = ["adfafavgtsgtwhgrtcsvhs6tt"]
+		hash["operations"] = [operation]
+
+		p hash
+		#p BitShares::WSocket.send hash
 	end
 
 	describe ".config" do

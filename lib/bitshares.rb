@@ -50,7 +50,7 @@ module BitShares
 			RPC.new('set_subscribe_callback', [id, clear_filter]).send
 		end
 
-		def transfer that, amount, from, to
+		def transfer what, amount, from, to
 			RPC.new 'transfer',[]
 		end
 
